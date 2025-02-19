@@ -29,16 +29,20 @@ db.set(id++, youtuber3);
 
 // Rest API 설계
 app.get('/youtubers', (req , res) => {
-    db.forEach(function(youtuber){
-        console.log(youtuber);
-    })
+    var youtubers = {}
 
-    var jsonObject = {}
-    db.forEach(function(value , key){
-        jsonObject[key] = value;
-    })
+    if( db.size !== 0 ){
+        db.forEach(function(value , key){
+            youtubers[key] = value;
+        })
+    
+        res.json(youtubers);
 
-    res.json(jsonObject);
+    }else{
+        res.status(404).json({
+            message : "조회할 유튜버가 없습니다."
+        });
+    }
 })
 
 app.get('/youtubers/:id', function(req,res){
@@ -47,7 +51,7 @@ app.get('/youtubers/:id', function(req,res){
 
     const youtuber = db.get(id);
     if (youtuber == undefined){
-        res.json({
+        res.status(404).json({
             message : "유튜버 정보를 찾을 수 없습니다."
         })
     }else{
@@ -57,14 +61,19 @@ app.get('/youtubers/:id', function(req,res){
 
 app.use(express.json());    // http 외 모듈인 '미들웨어' : json 설정
 app.post('/youtubers' , (req,res) => {
-    console.log(req.body);
+    const channelTitle = req.body.channelTitle;    
+    if( channelTitle ){
+        // 등록..? Map(db)에 저장(set) 해줘야함
+        db.set(id++, req.body)
     
-    // 등록..? Map(db)에 저장(set) 해줘야함
-    db.set(id++, req.body)
-
-    res.json({
-        message : `${db.get(id-1).channelTitle} 님의 유튜브 활동을 응원합니다.`
-    });
+        res.json({
+            message : `${db.get(id-1).channelTitle} 님의 유튜브 활동을 응원합니다.`
+        });
+    }else{
+        res.status(400).json({
+            message : "요청 값이 잘못되었습니다."
+        });
+    }
 })
 
 app.delete('/youtubers/:id', (req , res) => {
@@ -73,17 +82,17 @@ app.delete('/youtubers/:id', (req , res) => {
 
     var youtuber = db.get(id);
 
-    if( youtuber == undefined ){
-        res.json({
-            message : `요청하신 ${id} 유튜버 정보를 찾을 수 없습니다.`
-        })
-    }else{
+    if( youtuber ){
         const channelTitle = youtuber.channelTitle;
     
         db.delete(id);
     
         res.json({
             message : `${channelTitle}님, 다음에 또 뵙길 바랍니다.`
+        })
+    }else{
+        res.status(404).sjson({
+            message : `요청하신 ${id} 유튜버 정보를 찾을 수 없습니다.`
         })
     }
 })
@@ -97,9 +106,10 @@ app.delete('/youtubers', (req, res) => {
             message: `전체 유튜버가 삭제되었습니다.`
         })
     }else{
-        res.json({
+        res.status(404).json({
             message: `삭제할 유튜버가 없습니다.`
         })
+
     }
 })
 
@@ -110,7 +120,7 @@ app.put('/youtubers/:id' , (req, res) =>{
     let youtuber = db.get(id);
     let oldTitle = youtuber.channelTitle;
     if (youtuber == undefined){
-        res.json({
+        res.status(404).json({
             message : `요청하신 ${id}번은 없는 유튜버입니다.`
         })
     }else{
