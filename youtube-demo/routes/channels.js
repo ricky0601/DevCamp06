@@ -1,33 +1,37 @@
 const express = require('express');
-const app = express();
-app.use(express.json());
-app.listen(1234);
+const router = express.Router();
+
+router.use(express.json())
 
 let db = new Map();
 let id = 1;
 
-app
-    .route('/channels')
+router
+    .route('/')
     .get((req , res) => {
-        var channels = {}
+        let {userId} = req.body;
+        let channels = []
 
-        if( db.size !== 0 ){
+        if( db.size !== 0 && userId != undefined ){
             db.forEach(function(value , key){
-                channels[key] = value;
+                if(value.userId === userId){
+                    channels.push(value)
+                }
             })
-        
-            res.status(200).json(channels);
-
+            if(channels.length != 0){
+                res.status(200).json(channels);
+            }else{
+                notFoundChannel();
+            }
         }else{
-            res.status(400).json({
-                message : "존재하는 채널이 없습니다."
-            })
+            notFoundChannel();
         }
     })  // 채널 전체 조회
     .post((req , res) => {
         console.log(req.body.channelTitle)
         if ( req.body.channelTitle ){
-            db.set(id++, req.body)
+            let channel = req.body;
+            db.set(id++, channel);
     
             res.status(201).json({
                 message : `${db.get(id-1).channelTitle} 채널 생성되었습니다.`
@@ -40,19 +44,17 @@ app
     }) // 채널 개별 생성
 
 
-app
-    .route('/channels/:id')
+router
+    .route('/:id')
     .get((req , res) => {
         let {id} = req.params;
         id = parseInt(id);
         let channel = db.get(id);
 
-        if(channel == undefined ){
-            res.status(404).json({
-                message : "없는 데이터"
-            })
-        }else{
+        if(channel != undefined ){
             res.status(200).json(channel)
+        }else{
+            notFoundChannel();
         }
     })  // 채널 개별 조회
     .put((req , res) => {
@@ -71,9 +73,7 @@ app
                 message : `${oldTitle}에서 ${newTitle}로 채널명이 바뀌었습니다.`
             })
         }else{
-            res.status(404).json({
-                message : "잘못된 요청입니다."
-            })
+            notFoundChannel();
         }
 
         res.send("개별 수정")
@@ -91,8 +91,14 @@ app
                 message : `${channelTitle} 채널이 삭제되었습니다.`
             })
         }else{
-            res.status(404).json({
-                message : "잘못된 요청입니다."
-            })
+            notFoundChannel();
         }
     })   // 채널 개별 삭제
+
+function notFoundChannel(){
+    res.status(404).json({
+        message : "채널 정보를 찾을 수 없습니다."
+    })
+}
+
+module.exports = router;
