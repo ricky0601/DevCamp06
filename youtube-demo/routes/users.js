@@ -33,7 +33,7 @@ router.post('/join', (req, res) => {
     }else{
         const {email, name, password, contect} = req.body;
 
-        let sql = `INSERT INTO users (email, name, password, contect) VALUES (?, ?, ?, ?)`
+        let sql = `INSERT INTO users (email, name, password, contact) VALUES (?, ?, ?, ?)`
         let values = [email,name,password,contect]
         conn.query(sql, values,  
             function (err, results) {
