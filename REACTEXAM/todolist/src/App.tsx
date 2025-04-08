@@ -1,5 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
+import TodoList from './TodoList';
+import MapTest from './MapTest';
 import './App.css';
 
 /*
@@ -9,16 +11,9 @@ import './App.css';
 */
 
 function App() {
-  let name = "리액트";
-
   return (
-    <div className="containter">
-      <h1 className='test'>Hello,
-        {
-          name === '리액트' ? (<h1>Yes</h1>) : (null)
-        }!!
-        </h1>
-      {/* <p>반갑습니다.</p> */}
+    <div className='container'>
+      <TodoList />
     </div>
   );
 }
