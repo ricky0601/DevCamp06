@@ -1,7 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
 import TodoList from './TodoList';
-import MapTest from './MapTest';
+import Timer from './Timer';
 import './App.css';
 
 /*
@@ -14,6 +13,7 @@ function App() {
   return (
     <div className='container'>
       <TodoList />
+      <Timer />
     </div>
   );
 }

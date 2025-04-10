@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
+import { Button } from 'react-bootstrap';
 
 type Todo = {
     id : number;
@@ -16,17 +17,51 @@ const TodoList : React.FC = () =>{
         {id : 3, text : '미팅하기' , isChecked : false},
     ]);
 
+    const [newTodo, setNewTodo] = useState<string>('');
+
+
+    const handleCheckedChange = (id:number) => {
+        setTodos((prevItems) => 
+            prevItems.map((item) => 
+                item.id === id ? { ...item , isChecked : !item.isChecked } : item
+            )
+        )
+    };
+
+    const addTodo = () => {
+        if(newTodo.trim() !== ''){
+            setTodos([...todos, {id: Date.now(), text: newTodo, isChecked: false}]);
+            setNewTodo('');
+        }
+    }
 
     return(
         <div className="container">
             <h1>{title}</h1>
             <p></p>
+            <div style={{ marginBottom: '10px'}}>
+                <input type="text" placeholder="할일을 입력하세요" style={{marginRight: '10px', writingMode: 'horizontal-tb',}} onChange={(e)=>setNewTodo(e.target.value)}/>
+                <Button variant="primary" onClick={addTodo}>추가</Button>
+            </div>
             <div>
                 <div className="board">
                     <ul>
                         {
                             todos.map((todo , idx) => (
-                                <li key={idx}>{todo.text}</li>
+                                <li key={todo.id}>
+                                    <input type="checkbox"
+                                        onChange={()=>{
+                                            handleCheckedChange(todo.id);
+                                        }}
+                                    />
+                                    <span>
+                                        {
+                                            todo.isChecked ? 
+                                            <del>{todo.text}</del>
+                                            : <>{todo.text}</>
+                                        }
+                                    </span>
+                                </li>
                             ))
                         }
                     </ul>
