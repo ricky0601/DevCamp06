@@ -8,10 +8,11 @@ function App() {
 
   return (
     <div className={appContainer}>
+      <BoardList 
+        activeBoardId={activeBoardId}
+        setActiveBoardId={setActiveBoardId} />
       <div className={board}>
-        <BoardList 
-          activeBoardId={activeBoardId}
-          setActiveBoardId={setActiveBoardId} />
+        
       </div>
       <div className={buttons}>
         <button>
