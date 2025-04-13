@@ -2,6 +2,7 @@
 
 import React, { ChangeEvent, FC, useState } from "react";
 import { FiCheck } from "react-icons/fi";
+import { icon, input, sideForm } from "./SideForm.css";
 
 type TSideFormProps = {
     // inputRef: React.RefObject<HTMLInputElement>;
@@ -21,9 +22,9 @@ const SideForm : FC<TSideFormProps> = ({
     }
 
     return (
-        <div>
+        <div className={sideForm}>
             <input
-                // ref={inputRef}
+                className={input}
                 autoFocus
                 type="text"
                 placeholder="새로운 게시판 등록하기"
@@ -31,7 +32,7 @@ const SideForm : FC<TSideFormProps> = ({
                 onChange={handleChange}
                 onBlur={handleOnBlur}
             />
-            <FiCheck />
+            <FiCheck className={icon} />
         </div>
     )
 }
