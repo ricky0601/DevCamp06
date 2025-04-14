@@ -1,7 +1,9 @@
 import { FiX } from "react-icons/fi"
 import { useTypedDispatch, useTypedSelector } from "../../hooks/redux"
-import React, { useState } from "react";
-import { setModalActive } from "../../store/slices/boardSlice";
+import React, { ChangeEvent, useState } from "react";
+import { deleteTask, setModalActive, updateTask } from "../../store/slices/boardSlice";
+import { addLog } from "../../store/slices/loggerSlice";
+import { v4 } from "uuid";
 
 const EditModal = () => {
 
@@ -12,6 +14,78 @@ const EditModal = () => {
 
     const handleCloseButton = () => {
         dispatch( setModalActive(false) );
+    }
+
+    const handleNameChange = (e : ChangeEvent<HTMLInputElement>) => {
+        setData({
+            ...data,
+            task: {
+                ...data.task,
+                taskName: e.target.value
+            }
+        })
+    }
+
+    const handleDescriptionChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setData({
+            ...data,
+            task: {
+                ...data.task,
+                taskDescription : e.target.value
+            }
+        })
+    }
+
+    const handleAuthorChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setData({
+            ...data,
+            task: {
+                ...data.task,
+                taskOwner: e.target.value
+            }
+        })
+    }
+
+    const handleUpdate = () => {
+        dispatch(
+            updateTask({
+                boardId : editingState.boardId,
+                listId : editingState.listId,
+                task: data.task,
+            })
+        );
+
+        dispatch(
+            addLog({
+                logId: v4(),
+                logMessage : `일 수정하기 : ${editingState.task.taskName}`,
+                logAuthor : "User",
+                logTimestamp : String(Date.now()),
+            })
+        );
+
+        dispatch(setModalActive(false));
+    };
+
+    const handleDelete = () =>{
+        dispatch(
+            deleteTask({
+                boardId: editingState.boardId,
+                listId: editingState.listId,
+                taskId: editingState.task.taskId,
+            })
+        );
+
+        dispatch(
+            addLog({
+                logId: v4(),
+                logMessage: `일 삭제하기 : ${editingState.task.taskName}`,
+                logAuthor: "User",
+                logTimestamp: String(Date.now()),
+            })
+        );
+
+        dispatch(setModalActive(false));
     }
 
     return (
@@ -25,22 +99,25 @@ const EditModal = () => {
                 <input
                     type="text"
                     value={data.task.taskName}
+                    onChange={handleNameChange}
                 />
                 <div>설명</div>
                 <input
                     type="text"
                     value={data.task.taskDescription}
+                    onChange={handleDescriptionChange}
                 />
                 <div>생성한 사람</div>
                 <input
                     type="text"
                     value={data.task.taskOwner}
+                    onChange={handleAuthorChange}
                 />
                 <div>
-                    <button>
+                    <button onClick={handleUpdate}>
                         일 수정하기
                     </button>
-                    <button>
+                    <button onClick={handleDelete}>
                         일 삭제하기
                     </button>
                 </div>
