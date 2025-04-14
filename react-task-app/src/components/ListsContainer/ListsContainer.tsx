@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { IList } from '../../types';
 import List from '../List/List';
-import ActionBotton from '../ActionBotton/ActionBotton';
+import ActionButton from '../ActionBotton/ActionBotton';
 import { listsContainer } from './ListsContainer.css';
 
 type TListsContainerProps = {
@@ -24,7 +24,11 @@ const ListsContainer: FC<TListsContainerProps> = ({
                     />
                 ))
             }
-            <ActionBotton />
+            <ActionButton
+                boardId={boardId}
+                listId={""}
+                list
+            />
         </div>
     )
 }

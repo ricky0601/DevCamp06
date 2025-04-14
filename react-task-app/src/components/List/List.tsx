@@ -2,7 +2,7 @@
 
 import { GrSubtract } from "react-icons/gr"
 import Task from "../Task/Task";
-import ActionBotton from "../ActionBotton/ActionBotton";
+import ActionButton from "../ActionBotton/ActionBotton";
 import { IList, ITask } from "../../types";
 import { FC } from "react";
 import { useTypedDispatch } from "../../hooks/redux";
@@ -76,7 +76,10 @@ const List: FC<TListProps> = ({
                     />
                 </div>
             ))}
-            <ActionBotton  />
+            <ActionButton
+                boardId={boardId}
+                listId={list.listId}
+            />
         </div>
     )
 }
