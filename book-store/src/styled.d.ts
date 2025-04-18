@@ -16,7 +16,22 @@ declare module 'styled-components' {
             [key in HeadingSize] : {
                 fontSize: string;
             };
-        }
+        };
+        button : {
+            [key in ButtonSize]: {
+                fontSize: string;
+                padding: string;
+            }
+        };
+        buttonScheme: {
+            [key in ButtonScheme]: {
+                color : string;
+                backgroundColor : string;
+            }
+        };
+        borderRadius: {
+            default: string;
+        };
         // 다른 테마 속성들 (예: FONT_SIZE, PADDING 등)이 있다면 추가
         // typography?: { ... };
         // spacing?: { ... };
