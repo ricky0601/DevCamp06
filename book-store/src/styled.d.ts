@@ -8,6 +8,8 @@ declare module 'styled-components' {
             background: string,
             secondory : string,
             third : string,
+            border : string,
+            text : string,
             // secondary?: string; // 다른 색상 속성이 있다면 추가
             // background?: string;
             // text?: string;
