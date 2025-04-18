@@ -12,6 +12,11 @@ declare module 'styled-components' {
             // background?: string;
             // text?: string;
         };
+        heading : {
+            [key in HeadingSize] : {
+                fontSize: string;
+            };
+        }
         // 다른 테마 속성들 (예: FONT_SIZE, PADDING 등)이 있다면 추가
         // typography?: { ... };
         // spacing?: { ... };
