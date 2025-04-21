@@ -1,9 +1,6 @@
 import { styled } from "styled-components";
 import logo from '../../assets/images/logo.png';
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Category } from "../../models/category.model";
-import { fetchCategory } from "../../api/category.api";
 import { useCategory } from "../../hooks/useCategory";
 
 function Header() {
@@ -38,7 +35,7 @@ function Header() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/login">
+                        <Link to="/signup">
                             회원가입
                         </Link>
                     </li>
