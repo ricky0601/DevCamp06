@@ -34,8 +34,10 @@ declare module 'styled-components' {
         borderRadius: {
             default: string;
         };
-        // 다른 테마 속성들 (예: FONT_SIZE, PADDING 등)이 있다면 추가
-        // typography?: { ... };
-        // spacing?: { ... };
+        layout : {
+            width: {
+                [key in LayoutWidth] : string;
+            }
+        }
     }
 }
