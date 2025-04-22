@@ -5,25 +5,22 @@ import Button from "../components/common/Button";
 import { data, Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { signup } from "../api/auth.api";
+import { resetPassword, resetRequest, signup } from "../api/auth.api";
 import { useAlert } from "../hooks/useAlert";
+import { SignupStyle } from "./Signup";
 
 export interface SignupProps{
     email: string;
     password: string;
 }
 
-function Signup(){
+function ResetPassword(){
 
     const navigate = useNavigate();
     const showAlert = useAlert();
-    // const [email, setEmail] = useState("");
-    // const [password, setPassword] = useState("");
-
-    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    //     event.preventDefault();
-    //     console.log(`이메일: ${email} 패스워드 : ${password}`)
-    // }
+    
+    const [resetRequested, setResetRequested] = useState
+    (false);
 
     const {
         register,
@@ -32,15 +29,23 @@ function Signup(){
     } = useForm<SignupProps>();
 
     const onSubmit = (data: SignupProps) => {
-        signup(data).then((res)=>{
-            showAlert('회원가입이 완료되었습니다.');
-            navigate('/login');
-        });
+        if(resetRequested){
+            // 초기화 요청
+            resetPassword(data).then(() => {
+                showAlert("비밀번호가 초기화 되었습니다.");
+                navigate("/login");
+            })
+        }else{
+            // 요청
+            resetRequest(data).then(() => {
+                setResetRequested(true);
+            });
+        }
     };
 
     return (
         <>
-            <Title size="large">회원가입</Title>
+            <Title size="large">비밀번호 초기화</Title>
             <SignupStyle>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <fieldset>
@@ -57,23 +62,25 @@ function Signup(){
                             </p>
                         }
                     </fieldset>
-                    <fieldset>
-                        <InputText placeholder="비밀번호"
-                        inputType="password"
-                        {...register("password", {
-                            required: true
-                        })}
-                        />
-                        {
-                            errors.email &&
-                            <p className="error-text">
-                                비밀번호를 입력해주세요.
-                            </p>
-                        }
-                    </fieldset>
+                    {resetRequested && (
+                        <fieldset>
+                            <InputText placeholder="비밀번호"
+                            inputType="password"
+                            {...register("password", {
+                                required: true
+                            })}
+                            />
+                            {
+                                errors.email &&
+                                <p className="error-text">
+                                    비밀번호를 입력해주세요.
+                                </p>
+                            }
+                        </fieldset>
+                    )}
                     <fieldset>
                         <Button type="submit" size="medium" scheme="primary">
-                            회원가입
+                            {resetRequested ? "비밀번호 초기화" : "비밀번호 초기화 요청"}
                         </Button>
                     </fieldset>
                     <div className="info">
@@ -84,32 +91,8 @@ function Signup(){
         </>
     )
 
-}
+};
 
-export const SignupStyle =styled.div`
-    max-width: ${({theme}) => theme.layout.width.small};
-    margin: 80px auto;
 
-    fieldset{
-        border: 0;
-        padding: 0 0 8px 0;
-        .error-text{
-            color: red;
-        }
-    }
-    
-    input{
-        width: 100%;
-    }
 
-    button{
-        width: 100%;
-    }
-
-    .info{
-        text-align: center;
-        padding: 16px 0 0 0;
-    }
-`;
-
-export default Signup;
+export default ResetPassword;
