@@ -4,7 +4,7 @@ import styled from 'styled-components';
 function BooksViewSwitcher() {
     return (
         <BooksViewSwitcherStyle>
-            
+            <h1>ViewSwitcher</h1>
         </BooksViewSwitcherStyle>
     );
 }

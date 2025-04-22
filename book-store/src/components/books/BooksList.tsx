@@ -3,31 +3,26 @@ import styled from 'styled-components';
 import BookItem from './BookItem';
 import { Book } from '../../models/book.model';
 
-const dummyBook: Book = {
-    id: 1,
-    title: "Dummy Book",
-    img: 5,
-    category_id: 1,
-    summary: "Dummy Summary",
-    author: "Dummy Author",
-    price: 10000,
-    likes: 1,
-    form: "paperback",
-    isbn: "Dummy ISBN",
-    detail: "Dummy Detail",
-    pages: 100,
-    contents: "Dummy Contents",
-    pubDate: "2025-04-22",
+interface BooksListProps {
+    books: Book[];
 }
 
-function BooksList() {
+function BooksList({books} : BooksListProps) {
     return (
         <BooksListStyle>
-            <BookItem book={dummyBook} />
+            {
+                books?.map((item) => (
+                    <BookItem book={item} key={item.id} />
+                ))
+            }
         </BooksListStyle>
     );
 }
 
-const BooksListStyle = styled.div``;
+const BooksListStyle = styled.div`
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+`;
 
 export default BooksList;
