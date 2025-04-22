@@ -38,8 +38,6 @@ function Signup(){
         });
     };
 
-    console.log(errors);
-
     return (
         <>
             <Title size="large">회원가입</Title>
@@ -62,7 +60,7 @@ function Signup(){
                     <fieldset>
                         <InputText placeholder="비밀번호"
                         inputType="password"
-                        {...register("email", {
+                        {...register("password", {
                             required: true
                         })}
                         />

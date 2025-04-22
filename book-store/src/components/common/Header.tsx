@@ -18,9 +18,9 @@ function Header() {
                 <ul>
                     {
                         category.map((item) => (
-                            <li key={item.id}>
-                                <Link to={item.id === null ? "/books" : `/books?category_id=${item.id}`}>
-                                    {item.name}
+                            <li key={item.category_id}>
+                                <Link to={item.category_id === null ? "/books" : `/books?category_id=${item.category_id}`}>
+                                    {item.category_name}
                                 </Link>
                             </li>
                         ))
