@@ -6,18 +6,48 @@ import { useSearchParams } from 'react-router-dom';
 
 function BooksFilter() {
     const { category } = useCategory();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const handleCategory = (category_id: number | null) => {
+        const newSearchParams = new URLSearchParams(searchParams); 
+
+        if(category_id === null){
+            newSearchParams.delete("category_id");
+        }else{
+            newSearchParams.set("category_id", category_id.toString());
+        }
+
+        setSearchParams(newSearchParams);
+    };
+
+    const handleNews = () => {
+        const newSearchParams = new URLSearchParams(searchParams);
+        if(newSearchParams.get('news')){
+            newSearchParams.delete('news');
+        }else{
+            newSearchParams.set('news','true');
+        }
+        setSearchParams(newSearchParams);
+    }
 
     return (
         <BooksFilterStyle>
             <div className="category">
                 {
                     category.map((item) => (
-                        <Button size="medium" scheme="normal" key={item.category_id}>{item.category_name}</Button>
+                        <Button
+                            size="medium"
+                            scheme={item.isActive ? 'primary' : 'normal'}
+                            key={item.category_id ?? 'all'}
+                            onClick={() => handleCategory(item.category_id)}
+                        >
+                            {item.category_name}
+                        </Button>
                     ))
                 }
             </div>
             <div className="new">
-                <Button size="medium" scheme='normal'>신간</Button>
+                <Button size="medium" scheme={searchParams.get('news') ? 'primary' : 'normal'} onClick={() => {handleNews()}}>신간</Button>
             </div>
         </BooksFilterStyle>
     );

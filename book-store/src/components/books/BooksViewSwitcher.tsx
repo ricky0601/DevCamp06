@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 function BooksViewSwitcher() {
     return (
-        <div>
+        <BooksViewSwitcherStyle>
             
-        </div>
+        </BooksViewSwitcherStyle>
     );
 }
 

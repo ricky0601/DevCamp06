@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 function Pagination() {
     return (
-        <div>
+        <PaginationStyle >
             
-        </div>
+        </PaginationStyle>
     );
 }
 
