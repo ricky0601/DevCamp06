@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Title from "../components/common/Title";
 import InputText from "../components/common/inputText";
 import Button from "../components/common/Button";
-import { data, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { signup } from "../api/auth.api";
