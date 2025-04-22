@@ -1,27 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import BookItem from './BookItem';
 import { Book } from '../../models/book.model';
+import { useLocation } from 'react-router-dom';
+import { QUERYSTRING } from '../../constants/querystring';
+import { ViewMode } from './BooksViewSwitcher';
 
 interface BooksListProps {
     books: Book[];
 }
 
 function BooksList({books} : BooksListProps) {
+    const [view, setView] = useState<ViewMode>("grid");
+    const location = useLocation();
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        if(params.get(QUERYSTRING.VIEW)){
+            setView(params.get(QUERYSTRING.VIEW) as ViewMode);
+        }
+    },[location.search])
+
     return (
-        <BooksListStyle>
+        <BooksListStyle view={view}>
             {
                 books?.map((item) => (
-                    <BookItem book={item} key={item.id} />
+                    <BookItem book={item} key={item.id} view={view} />
                 ))
             }
         </BooksListStyle>
     );
 }
 
-const BooksListStyle = styled.div`
+interface BooksListStyleProps {
+    view: ViewMode;
+}
+
+const BooksListStyle = styled.div<BooksListStyleProps>`
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: ${({view}) => (view === 'grid' ? "repeat(4, 1fr)" : "repeat(1, 1fr)")};
     gap: 24px;
 `;
 
