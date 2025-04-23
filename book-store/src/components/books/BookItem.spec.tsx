@@ -17,7 +17,7 @@ const dummyBook = {
     detail: "Dummy Detail",
     pages: 100,
     contents: "Dummy Contents",
-    pubDate: "2025-04-22",
+    pub_date: "2025-04-22",
 }
 
 describe("Book Item Test", () => {
