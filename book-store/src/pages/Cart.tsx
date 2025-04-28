@@ -6,8 +6,16 @@ import { useCart } from '../hooks/useCart';
 import Empty from '../components/common/Empty';
 import { FaShoppingCart } from 'react-icons/fa';
 import CartSummary from '../components/cart/CartSummary';
+import Button from '../components/common/Button';
+import { useAlert } from '../hooks/useAlert';
+import { OrderSheet } from '../models/order.model';
+import { useNavigate } from 'react-router-dom';
 
 function Cart() {
+
+    const {showAlert, showConfirm} = useAlert();
+
+    const navigate = useNavigate();
 
     const {carts, deleteCartItem, isEmpty} = useCart();
 
@@ -45,6 +53,24 @@ function Cart() {
         }, 0)
     }, [carts, checkedItems]);
 
+    const handleOrder = () => {
+        if(checkedItems.length === 0){
+            showAlert("주문할 상품을 선택해주세요.");
+            return;
+        }
+
+        const orderData:Omit<OrderSheet, "delivery"> = {
+            items: checkedItems,
+            totalQuantity: totalQuantity,
+            totalPrice: totalPrice,
+            firstBookTitle: carts[0].title,
+        };
+
+        showConfirm("주문하시겠습니까?", () => {
+            navigate("/order",{state: orderData});
+        })
+    };
+
     return (
         <>
             <Title size='large'>장바구니</Title>
@@ -70,6 +96,9 @@ function Cart() {
                                     totalQuantity={totalQuantity}
                                     totalPrice={totalPrice}
                                 />
+                                <Button size='large' scheme='primary' onClick={handleOrder}>
+                                    주문하기
+                                </Button>
                             </div>
                         </>
                     )
@@ -103,6 +132,8 @@ const CartStyle = styled.div`
 
     .summary{
         display: flex;
+        flex-direction: column;
+        gap: 24px;
     }
 `;
 
