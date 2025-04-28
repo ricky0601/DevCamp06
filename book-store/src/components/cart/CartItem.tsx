@@ -18,7 +18,6 @@ function CartItem({cart, checkedItems, onCheck, onDelete }: Props) {
 
     const {showConfirm} = useAlert();
 
-    // checkedItems 목록에 내가 있는지 판단 => checked
     const isChecked = useMemo(() => {
         return checkedItems.includes(cart.id);
     },[checkedItems, cart.id])
