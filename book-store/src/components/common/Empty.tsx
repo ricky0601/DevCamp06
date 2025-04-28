@@ -5,7 +5,7 @@ import React from "react";
 interface Props{
     icon?: React.ReactNode;
     title: string;
-    description: React.ReactNode;
+    description?: React.ReactNode;
 }
 
 function Empty({icon, title, description}:Props){
