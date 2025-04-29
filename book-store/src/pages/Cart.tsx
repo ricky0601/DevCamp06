@@ -61,8 +61,8 @@ function Cart() {
 
         const orderData:Omit<OrderSheet, "delivery"> = {
             items: checkedItems,
-            totalQuantity: totalQuantity,
-            totalPrice: totalPrice,
+            total_quantity: totalQuantity,
+            total_price: totalPrice,
             firstBookTitle: carts[0].title,
         };
 
