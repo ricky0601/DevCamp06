@@ -1,5 +1,6 @@
 import {setupWorker} from "msw/browser";
+import { reviewsById } from "./review";
 
-const handlers = [];
+const handlers = [reviewsById];
 
 export const worker = setupWorker(...handlers);
